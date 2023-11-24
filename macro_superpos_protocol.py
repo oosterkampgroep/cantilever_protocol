@@ -251,6 +251,30 @@ def multiple_nth():
     plt.show()
 
 
+def multiple_q():
+    x = np.linspace(-50, 50, 1001)
+    q_list = np.logspace(4,8,25)
+    fraction_list = np.zeros(25)
+    for idx, q in enumerate(q_list):
+        simulation = Protocol(lambda_f = 0.045, 
+                          omega_f = 3000, 
+                          temp = 2E-4, 
+                          Q = q, 
+                          T2 = 0.1, 
+                          Beta = 3.33E4, 
+                          n_imp = 80, 
+                          nc = 3)
+        fraction_list[idx] = simulation.calc_frac()
+
+    fig, ax = plt.subplots()
+    ax.scatter(q_list, fraction_list)
+    ax.grid()
+    ax.set_xscale("log")
+    ax.set_ylabel(r"$\eta$")
+    ax.set_xlabel("Q-factor")
+    plt.show()
+
+
 def optimap_qt():
     def fracfunc(q, t):
         simulation = Protocol(lambda_f = 0.045, 
@@ -283,14 +307,15 @@ def optimap_qt():
 if __name__ == "__main__":
     #multiple_nc()
     #multiple_nth()
+    multiple_q()
     #optimap_qt()
-    simulation = Protocol(lambda_f = 0.045, 
-                          omega_f = 3000, 
-                          temp = 2E-4, 
-                          Q = 3E5, 
-                          T2 = 0.1, 
-                          Beta = 3.33E4, 
-                          n_imp = 80, 
-                          nc = 3)
-    simulation.plot_p3t()
-    print(simulation.fraction)
+    # simulation = Protocol(lambda_f = 0.045, 
+    #                       omega_f = 3000, 
+    #                       temp = 2E-4, 
+    #                       Q = 1E4, 
+    #                       T2 = 0.1, 
+    #                       Beta = 3.33E4, 
+    #                       n_imp = 80, 
+    #                       nc = 3)
+    # simulation.plot_p3t()
+    # print(simulation.fraction)
